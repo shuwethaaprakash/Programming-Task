@@ -6,6 +6,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync"
 )
 
 type Request struct {
@@ -34,25 +35,51 @@ func main() {
 	urlCount := make(map[string]int)
 	activeIPs := make(map[string]int)
 
-	// Read the file line by line ==> load concurrently AND in chunks to improve speed
+	// Read the file line by line
 	scanner := bufio.NewScanner(file)
+
+	// Create a wait group to process the lines concurrently
+	var wg sync.WaitGroup
+
+	// Initialise mutex to avoid data race condition
+	var mutex = sync.RWMutex{}
+
 	for scanner.Scan() {
-		line := scanner.Text()
+		wg.Add(1)
+		go func(line string) {
+			defer wg.Done()
 
-		// Extract IP and URL
-		slice := strings.Fields(line)
-		ip := slice[0]
-		url := slice[6]
+			// Extract IP and URL
+			slice := strings.Fields(line)
 
-		// Update IP count
-		ipCount[ip]++
+			if len(slice) < 7 {
+				return
+			}
 
-		// Update URL count
-		urlCount[url]++
+			ip := slice[0]
+			url := slice[6]
 
-		// Update active IP count
-		activeIPs[ip]++
+			// Update IP count
+			mutex.Lock()
+			ipCount[ip]++
+			mutex.Unlock()
+
+			// Update URL count
+			mutex.Lock()
+			urlCount[url]++
+			mutex.Unlock()
+
+			// Update active IP count
+			mutex.Lock()
+			activeIPs[ip]++
+			mutex.Unlock()
+
+		}(scanner.Text())
+
 	}
+
+	// Wait for goroutines to complete
+	wg.Wait()
 
 	// Calculate number of unique IPs
 	uniqueIPs := len(ipCount)
