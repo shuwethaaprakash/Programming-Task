@@ -10,10 +10,11 @@ import (
 )
 
 type Request struct {
-	IP   string
-	DATE string
-	URL  string
+	IP  string
+	URL string
 }
+
+const chunkSize = 500
 
 func main() {
 	// Check that a log file is given
@@ -41,40 +42,48 @@ func main() {
 	// Create a wait group to process the lines concurrently
 	var wg sync.WaitGroup
 
-	// Initialise mutex to avoid data race condition
-	var mutex = sync.RWMutex{}
+	// Create individual mutex
+	var ipMutex sync.Mutex
+	var urlMutex sync.Mutex
+	var activeIPMutex sync.Mutex
 
-	for scanner.Scan() {
-		wg.Add(1)
-		go func(line string) {
-			defer wg.Done()
+	for {
+		// Create a "chunk" to read
+		lines := make([]string, 0, chunkSize)
+		for i := 0; i < chunkSize && scanner.Scan(); i++ {
+			lines = append(lines, scanner.Text())
+		}
 
-			// Extract IP and URL
-			slice := strings.Fields(line)
+		if len(lines) == 0 {
+			break
+		}
 
-			if len(slice) < 7 {
-				return
-			}
+		for _, line := range lines {
+			wg.Add(1)
+			go func(line string) {
+				defer wg.Done()
 
-			ip := slice[0]
-			url := slice[6]
+				// Extract IP and URL
+				slice := strings.Fields(line)
 
-			// Update IP count
-			mutex.Lock()
-			ipCount[ip]++
-			mutex.Unlock()
+				if len(slice) < 7 {
+					return
+				}
 
-			// Update URL count
-			mutex.Lock()
-			urlCount[url]++
-			mutex.Unlock()
+				ip := slice[0]
+				url := slice[6]
 
-			// Update active IP count
-			mutex.Lock()
-			activeIPs[ip]++
-			mutex.Unlock()
+				// Update IP count
+				increaseCount(&ipCount, ip, &ipMutex)
 
-		}(scanner.Text())
+				// Update URL count
+				increaseCount(&urlCount, url, &urlMutex)
+
+				// Update active IP count
+				increaseCount(&activeIPs, ip, &activeIPMutex)
+
+			}(line)
+		}
 
 	}
 
@@ -85,39 +94,50 @@ func main() {
 	uniqueIPs := len(ipCount)
 
 	// Find top 3 most visited URLs
-	var topURLs []string
-	for url := range urlCount {
-		topURLs = append(topURLs, url)
-	}
-	sort.SliceStable(topURLs, func(i, j int) bool { //use sort stable func instead
-		return urlCount[topURLs[i]] > urlCount[topURLs[j]]
-	})
-
-	if len(topURLs) > 3 {
-		topURLs = topURLs[:3]
-	}
+	topURLs := getTopThree(&urlCount)
 
 	// Find top 3 most active IP addresses
-	var topIPs []string
-	for ip := range activeIPs {
-		topIPs = append(topIPs, ip)
-	}
-	sort.SliceStable(topIPs, func(i, j int) bool {
-		return activeIPs[topIPs[i]] > activeIPs[topIPs[j]]
-	})
-
-	if len(topIPs) > 3 {
-		topIPs = topIPs[:3]
-	}
+	topIPs := getTopThree(&activeIPs)
 
 	// Print the results
-	fmt.Printf("Number of unique IP addresses: %d\n", uniqueIPs)
+	printResults(uniqueIPs, urlCount, activeIPs, topURLs, topIPs)
+}
+
+func increaseCount(m *map[string]int, key string, mutex *sync.Mutex) {
+	mutex.Lock()
+	(*m)[key]++
+	mutex.Unlock()
+}
+
+func getTopThree(m *map[string]int) []string {
+	// Create an array to hold the top 3 items
+	var topThree []string
+
+	for url := range *m {
+		topThree = append(topThree, url)
+	}
+
+	// Sort items in descending order (use sort stable func instead)
+	sort.SliceStable(topThree, func(i, j int) bool {
+		return (*m)[topThree[i]] > (*m)[topThree[j]]
+	})
+
+	// Get the top 3 items
+	if len(topThree) > 3 {
+		topThree = topThree[:3]
+	}
+
+	return topThree
+}
+
+func printResults(numIPs int, urls map[string]int, IPs map[string]int, topURLs []string, topIPs []string) {
+	fmt.Printf("Number of unique IP addresses: %d\n", numIPs)
 	fmt.Println("Top 3 most visited URLs:")
 	for i, url := range topURLs {
-		fmt.Printf("%d. %s (%d vists)\n", i+1, url, urlCount[url])
+		fmt.Printf("%d. %s (%d vists)\n", i+1, url, urls[url])
 	}
 	fmt.Println("Top 3 most active IP addresses:")
 	for i, ip := range topIPs {
-		fmt.Printf("%d. %s (%d requests)\n", i+1, ip, activeIPs[ip])
+		fmt.Printf("%d. %s (%d requests)\n", i+1, ip, IPs[ip])
 	}
 }
