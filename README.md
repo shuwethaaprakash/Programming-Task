@@ -3,18 +3,11 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<div align="center">
-  <a href="https://github.com/shuwethaaprakash/Programming-Task">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
 <h3 align="center">Log File Parser</h3>
 
   <p align="center">
-    Parse a log file containing HTTP requests and report on its contents. Namely:
-    * The number of unique IP addresses
-    * The top 3 most visted URLs
-    * The top 3 most active IP addresses
+    Parse a log file containing HTTP requests and report on its contents.
     <br />
   </p>
 </div>
@@ -53,16 +46,10 @@ Parse a log file containing HTTP requests and report on its contents. For a give
     * The top 3 most visted URLs
     * The top 3 most active IP addresses
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
 * Golang
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- GETTING STARTED -->
@@ -82,9 +69,6 @@ Must have most recent stable version of golang _(at this current time: go1.22.1)
    git clone https://github.com/shuwethaaprakash/Programming-Task.git
    ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -96,8 +80,6 @@ Run the program with the following command:
 
 The output should look as follows:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- ASSUMPTIONS -->
 ## Assumptions
@@ -108,8 +90,6 @@ The output should look as follows:
 - The requests made are GET requests
 - Any URLs that cause HTTP errors are still included
 - The log file provided is in a readable format
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 ## Contact
