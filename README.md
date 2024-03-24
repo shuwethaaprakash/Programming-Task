@@ -42,10 +42,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 Parse a log file containing HTTP requests and report on its contents. 
+<br>
 For a given file we want to know:
-    * The number of unique IP addresses
-    * The top 3 most visted URLs
-    * The top 3 most active IP addresses
+- The number of unique IP addresses
+- The top 3 most visted URLs
+- The top 3 most active IP addresses
 
 
 ### Built With
@@ -95,7 +96,8 @@ The output should look as follows:
 <!-- CONTACT -->
 ## Contact
 
-Shuwethaa Prakash <br>
+Shuwethaa Prakash 
+<br>
 Project Link: [https://github.com/shuwethaaprakash/Programming-Task](https://github.com/shuwethaaprakash/Programming-Task)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
