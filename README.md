@@ -78,6 +78,7 @@ Run the program with the following command:
 ```sh
    go run main.go <log_file>
 ```
+_Note that this should be done from the internal folder._
 
 The output should look as follows:
 
