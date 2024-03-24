@@ -81,7 +81,10 @@ Run the program with the following command:
 _Note that this should be done from the internal folder._
 
 The output should look as follows:
+
+<br>
 ![output](/examples/output.png)
+
 
 <!-- ASSUMPTIONS -->
 ## Assumptions
