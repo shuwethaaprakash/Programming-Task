@@ -44,9 +44,9 @@
 Parse a log file containing HTTP requests and report on its contents. 
 
 For a given file we want to know:
-    * The number of unique IP addresses
-    * The top 3 most visted URLs
-    * The top 3 most active IP addresses
+- The number of unique IP addresses
+- The top 3 most visted URLs
+- The top 3 most active IP addresses
 
 
 ### Built With
