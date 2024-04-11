@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
 	"sync"
 )
@@ -43,4 +44,10 @@ func PrintResults(numIPs int, urls map[string]int, IPs map[string]int, topURLs [
 	for i, ip := range topIPs {
 		fmt.Printf("%d. %s (%d requests)\n", i+1, ip, IPs[ip])
 	}
+}
+
+func IsValidRequest(req string) bool {
+	pattern := `^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - (?:\w+ )?-? ?\[(\d{2}\/\w{3}\/\d{4}:\d{2}:\d{2}:\d{2} [+\-]\d{4})\] "GET (?:https?:\/\/[^\/]+)?\/?(?:[^"]*\/)?[^"]* HTTP\/1\.1" \d+ \d+ "-" "Mozilla\/.*"(?: .*)?$`
+	re := regexp.MustCompile(pattern)
+	return re.MatchString(req)
 }

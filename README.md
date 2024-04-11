@@ -83,7 +83,7 @@ _Note that this should be done from the internal folder._
 
 The output should look as follows:
 
-![output](/examples/output.png)
+![output](/demo/output.png)
 
 
 <!-- ASSUMPTIONS -->
