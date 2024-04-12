@@ -85,6 +85,17 @@ The output should look as follows:
 
 ![output](/demo/output.png)
 
+<!-- TESTING -->
+## Testing
+
+Test the program with the following command:
+```sh
+   go test test/main_test.go
+```
+Or you can change to the test directory and run :
+```sh
+   go test main_test.go
+``` 
 
 <!-- ASSUMPTIONS -->
 ## Assumptions
