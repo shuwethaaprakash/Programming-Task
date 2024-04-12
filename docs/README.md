@@ -32,6 +32,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#testing">Testing</a></li>
     <li><a href="#assumptions">Assumptions</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -42,10 +43,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 Parse a log file containing HTTP requests and report on its contents. 
+
 For a given file we want to know:
-    * The number of unique IP addresses
-    * The top 3 most visted URLs
-    * The top 3 most active IP addresses
+- The number of unique IP addresses
+- The top 3 most visted URLs
+- The top 3 most active IP addresses
 
 
 ### Built With
@@ -82,6 +84,19 @@ _Note that this should be done from the internal folder._
 
 The output should look as follows:
 
+![output](/demo/output.png)
+
+<!-- TESTING -->
+## Testing
+
+Test the program with the following command:
+```sh
+   go test test/main_test.go
+```
+Or you can change to the test directory and run :
+```sh
+   go test main_test.go
+``` 
 
 <!-- ASSUMPTIONS -->
 ## Assumptions
@@ -96,24 +111,8 @@ The output should look as follows:
 <!-- CONTACT -->
 ## Contact
 
-Shuwethaa Prakash <br>
+Shuwethaa Prakash
+
 Project Link: [https://github.com/shuwethaaprakash/Programming-Task](https://github.com/shuwethaaprakash/Programming-Task)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/shuwethaaprakash/Programming-Task.svg?style=for-the-badge
-[contributors-url]: https://github.com/shuwethaaprakash/Programming-Task/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/shuwethaaprakash/Programming-Task.svg?style=for-the-badge
-[forks-url]: https://github.com/shuwethaaprakash/Programming-Task/network/members
-[stars-shield]: https://img.shields.io/github/stars/shuwethaaprakash/Programming-Task.svg?style=for-the-badge
-[stars-url]: https://github.com/shuwethaaprakash/Programming-Task/stargazers
-[issues-shield]: https://img.shields.io/github/issues/shuwethaaprakash/Programming-Task.svg?style=for-the-badge
-[issues-url]: https://github.com/shuwethaaprakash/Programming-Task/issues
-[license-shield]: https://img.shields.io/github/license/shuwethaaprakash/Programming-Task.svg?style=for-the-badge
-[license-url]: https://github.com/shuwethaaprakash/Programming-Task/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
