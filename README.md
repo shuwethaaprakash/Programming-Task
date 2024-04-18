@@ -78,11 +78,11 @@ Must have most recent stable version of golang _(at this current time: go1.22.1)
 
 Run the program with the following command:
 ```sh
-   go run main.go <log_file>
+   go run cmd/main/main.go <log_file>
 ```
-_Note that this should be done from the internal folder._
+Or you can run it from the ```cmd``` or ```main``` directory and adjust the location of the ```main.go``` file accordingly.
 
-The output should look as follows:
+The output should look as follows (if used with ```demo/programming-task-example-data.log```:
 
 ![output](/demo/output.png)
 
@@ -93,7 +93,7 @@ Test the program with the following command:
 ```sh
    go test test/main_test.go
 ```
-Or you can change to the test directory and run :
+_Or_ you can change to the test directory and run :
 ```sh
    go test main_test.go
 ``` 
@@ -104,7 +104,6 @@ Or you can change to the test directory and run :
 - The program is only required to take in one log file at a time
 - All log files have the same structure for their requests i.e.
   `[IP ADDRESS] - [USER] [TIMESTAMP] "GET [REQUEST_URL] HTTP/1.1" [HTTP STATUS] 3574 "-" "[SEARCH ENGINES]"`
-- The requests made are GET requests
 - Any URLs that cause HTTP errors are still included
 - The log file provided is in a readable format
 
