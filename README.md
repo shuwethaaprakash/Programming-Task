@@ -82,7 +82,7 @@ Run the program with the following command:
 ```
 Or you can run it from the ```cmd``` or ```main``` directory and adjust the location of the ```main.go``` file accordingly.
 
-The output should look as follows (if used with ```demo/programming-task-example-data.log```:
+The output should look as follows (if used with ```demo/programming-task-example-data.log```):
 
 ![output](/demo/output.png)
 
