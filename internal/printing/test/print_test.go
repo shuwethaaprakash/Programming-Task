@@ -1,13 +1,14 @@
-package main
+package test
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/shuwethaaprakash/Programming-Task/internal/count"
-	"github.com/shuwethaaprakash/Programming-Task/internal/printing"
 	"io"
 	"os"
 	"testing"
+
+	"github.com/shuwethaaprakash/Programming-Task/internal/count"
+	"github.com/shuwethaaprakash/Programming-Task/internal/printing"
 )
 
 func TestPrintResults(t *testing.T) {
