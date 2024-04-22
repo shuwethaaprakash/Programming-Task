@@ -6,29 +6,39 @@ import (
 	"os"
 )
 
-func ReadLines(filePath string) ([]string, error) {
+func ReadLines(filePath string, batchSize int) ([][]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
-
 	defer func(file *os.File) {
 		err := file.Close()
 		if err != nil {
 			fmt.Println("Error closing file:", err)
-			return
 		}
 	}(file)
 
-	var lines []string
+	var batches [][]string
 	scanner := bufio.NewScanner(file)
+	batch := make([]string, 0, batchSize)
+
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		line := scanner.Text()
+		batch = append(batch, line)
+		if len(batch) == batchSize {
+			batches = append(batches, batch)
+			batch = make([]string, 0, batchSize)
+		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		return nil, err
+	if scanErr := scanner.Err(); err != nil {
+		return nil, scanErr
 	}
 
-	return lines, nil
+	// Append any remaining lines
+	if len(batch) > 0 {
+		batches = append(batches, batch)
+	}
+
+	return batches, nil
 }

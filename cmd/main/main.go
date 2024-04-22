@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/shuwethaaprakash/Programming-Task/internal/count"
 	"github.com/shuwethaaprakash/Programming-Task/internal/file"
-	"github.com/shuwethaaprakash/Programming-Task/internal/helper"
 	"github.com/shuwethaaprakash/Programming-Task/internal/log"
+	"github.com/shuwethaaprakash/Programming-Task/internal/printing"
 )
 
-const chunkSize = 500
+const batchSize = 500
 
 func main() {
 	// Check that a log file is given
@@ -20,25 +21,25 @@ func main() {
 
 	// Open given log file
 	filePath := os.Args[1]
-	lines, readErr := file.ReadLines(filePath)
+	batches, readErr := file.ReadLines(filePath, batchSize)
 	if readErr != nil {
 		fmt.Println("Error reading log file:", readErr)
 		return
 	}
 
 	// Process log lines
-	uniqueIPs, urlCount, activeIPs, processErr := log.ProcessChunks(lines, chunkSize)
+	uniqueIPs, urlCount, activeIPs, processErr := log.ProcessChunks(batches)
 	if processErr != nil {
 		fmt.Println("Error processing log lines:", processErr)
 		return
 	}
 
 	// Find top 3 most visited URLs
-	topURLs := helper.GetTopThree(urlCount)
+	topURLs := count.GetTopThree(urlCount)
 
 	// Find top 3 most active IP addresses
-	topIPs := helper.GetTopThree(activeIPs)
+	topIPs := count.GetTopThree(activeIPs)
 
 	// Print the results
-	helper.PrintResults(uniqueIPs, urlCount, activeIPs, topURLs, topIPs)
+	printing.PrintResults(uniqueIPs, urlCount, activeIPs, topURLs, topIPs)
 }

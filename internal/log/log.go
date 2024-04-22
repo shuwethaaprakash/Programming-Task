@@ -5,55 +5,43 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/shuwethaaprakash/Programming-Task/internal/helper"
+	"github.com/shuwethaaprakash/Programming-Task/internal/count"
+	"github.com/shuwethaaprakash/Programming-Task/internal/validate"
 )
 
-func ProcessChunks(lines []string, chunkSize int) (int, map[string]int, map[string]int, error) {
+func ProcessChunks(batches [][]string) (int, *count.SafeMap, *count.SafeMap, error) {
 	// Initialise maps for counting
-	ipCount := make(map[string]int)
-	urlCount := make(map[string]int)
-	activeIPs := make(map[string]int)
+	ipCount := count.SafeMap{}
+	urlCount := count.SafeMap{}
+	activeIPs := count.SafeMap{}
 
 	// Create a wait group to process the lines concurrently
 	var wg sync.WaitGroup
 
-	// Create individual mutex
-	var ipMutex sync.Mutex
-	var urlMutex sync.Mutex
-	var activeIPMutex sync.Mutex
-
-	// Process log lines in chunks
-	for i := 0; i < len(lines); i += chunkSize {
-		end := i + chunkSize
-		if end > len(lines) {
-			end = len(lines)
-		}
-		chunk := lines[i:end]
-
-		// Process chunk of log lines concurrently
-		for _, line := range chunk {
-			lineCopy := line
-			wg.Add(1)
-			go func(line string) {
-				defer wg.Done()
-				processLine(line, ipCount, urlCount, activeIPs, &ipMutex, &urlMutex, &activeIPMutex)
-			}(lineCopy)
-		}
+	// Process log lines in batches
+	for _, batch := range batches {
+		wg.Add(1)
+		go func(batch []string) {
+			defer wg.Done()
+			for _, line := range batch {
+				processLine(line, &ipCount, &urlCount, &activeIPs)
+			}
+		}(batch)
 	}
 
 	// Wait for goroutines to complete
 	wg.Wait()
 
 	// Calculate number of unique IPs
-	uniqueIPs := len(ipCount)
+	uniqueIPs := count.GetMapLength(&ipCount)
 
-	return uniqueIPs, urlCount, activeIPs, nil
+	return uniqueIPs, &urlCount, &activeIPs, nil
 }
 
-func processLine(line string, ipCount, urlCount, activeIPs map[string]int, ipMutex, urlMutex, activeIPMutex *sync.Mutex) {
+func processLine(line string, ipCount, urlCount, activeIPs *count.SafeMap) {
 
 	// Check if line is in a valid format
-	if !helper.IsValidRequest(line) {
+	if !validate.IsValidRequest(line) {
 		fmt.Printf("Error: Request %q is not in the correct format\n", line)
 		return
 	}
@@ -70,11 +58,11 @@ func processLine(line string, ipCount, urlCount, activeIPs map[string]int, ipMut
 	url := slice[6]
 
 	// Update IP count
-	helper.IncreaseCount(ipCount, ip, ipMutex)
+	count.IncreaseCount(ipCount, ip)
 
 	// Update URL count
-	helper.IncreaseCount(urlCount, url, urlMutex)
+	count.IncreaseCount(urlCount, url)
 
 	// Update active IP count
-	helper.IncreaseCount(activeIPs, ip, activeIPMutex)
+	count.IncreaseCount(activeIPs, ip)
 }
