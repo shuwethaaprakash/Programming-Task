@@ -104,8 +104,8 @@ _Or_ you can change location to within a given test directory (such as `internal
 ## Assumptions
 
 - The program is only required to take in one log file at a time
-- All log files have the same structure for their requests\ i.e.
-  `[IP ADDRESS] - [USER] [TIMESTAMP] "GET [REQUEST_URL] HTTP/1.1" [HTTP STATUS] 3574 "-" "[SEARCH ENGINES]"`
+- All log files have the same structure for their requests
+  i.e. `[IP ADDRESS] - [USER] [TIMESTAMP] "GET [REQUEST_URL] HTTP/1.1" [HTTP STATUS] 3574 "-" "[SEARCH ENGINES]"`
 - Any URLs that cause HTTP errors are still included
 - The log file provided is in a readable format
 
