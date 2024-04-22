@@ -89,13 +89,15 @@ The output should look as follows (if used with ```demo/programming-task-example
 <!-- TESTING -->
 ## Testing
 
-Test the program with the following command:
+The program has separate tests for each file within the internal package. You can test the program with the following command:
 ```sh
-   go test test/main_test.go
+   go test internal/test/<package>_test.go
 ```
-_Or_ you can change to the test directory and run :
+where package is, for example, `validate` or `count` etc.
+
+_Or_ you can change location to within a given test directory (such as `internal/file/test`) and run :
 ```sh
-   go test main_test.go
+   go test <package>_test.go
 ``` 
 
 <!-- ASSUMPTIONS -->
